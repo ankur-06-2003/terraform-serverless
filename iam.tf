@@ -1,5 +1,4 @@
 
-
 # IAM Assume Role Policy for Step Functions
 data "aws_iam_policy_document" "sfn_assume" {
   statement {

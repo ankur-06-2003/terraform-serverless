@@ -10,6 +10,7 @@ resource "aws_apigatewayv2_integration" "backend_integration" {
   integration_type       = "AWS_PROXY"
   integration_uri        = aws_lambda_function.backend.invoke_arn
   payload_format_version = "2.0"
+  integration_method = "POST"
 
   depends_on = [
     aws_apigatewayv2_api.http_api,
@@ -40,10 +41,11 @@ resource "aws_apigatewayv2_stage" "api_stage" {
 }
 
 # Lambda permission to allow API Gateway to invoke
-resource "aws_lambda_permission" "allow_api" {
-  statement_id  = "AllowAPIGatewayInvoke-${aws_apigatewayv2_api.http_api.id}"
+resource "aws_lambda_permission" "api_invoke" {
+  statement_id  = "AllowAPIGatewayInvoke"#-${aws_apigatewayv2_api.http_api.id}"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.backend.function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 }
+

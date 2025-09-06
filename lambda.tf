@@ -20,15 +20,12 @@ resource "aws_lambda_function" "backend" {
     variables = {
       NODE_ENV = "production"
       # put DB creds, API keys here instead of .env
+      REGISTRATION_TABLE = aws_dynamodb_table.registration.name
+      FEEDBACK_TABLE     = aws_dynamodb_table.feedback.name
+      # AWS_REGION         = var.aws_region
     }
   }
 }
 
 
-# Lambda permission to allow API Gateway to invoke
-resource "aws_lambda_permission" "api_invoke" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.backend.function_name
-  principal     = "apigateway.amazonaws.com"
-}
+
